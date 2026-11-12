@@ -35,7 +35,7 @@ export const DeviceSimulatorFrame: React.FC<DeviceSimulatorFrameProps> = ({
       {/* Top Application Bar - Clean 3-zone contract */}
       <header className="w-full border-b border-slate-800/80 bg-slate-950/80 backdrop-blur-md sticky top-0 z-40">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between gap-4">
-          {/* Zone 1: Wordmark */}
+          {/* Zone 1: Wordmark & Repo */}
           <div className="flex items-center gap-3 shrink-0">
             <div className="w-9 h-9 rounded-xl bg-gradient-to-tr from-cyan-500 to-blue-600 p-0.5 shadow-lg shadow-cyan-500/20">
               <div className="w-full h-full rounded-[10px] bg-slate-950 flex items-center justify-center text-cyan-400">
@@ -45,10 +45,18 @@ export const DeviceSimulatorFrame: React.FC<DeviceSimulatorFrameProps> = ({
             <div>
               <div className="flex items-center gap-2">
                 <span className="text-base font-extrabold tracking-tight text-white whitespace-nowrap">
-                  AEROWAVE 5G
+                  SWAT5G
                 </span>
-                <span className="hidden sm:inline-block px-2 py-0.5 rounded text-[10px] font-mono font-bold bg-cyan-950 text-cyan-300 border border-cyan-500/40">
-                  5.2 - 5.8 GHz ONLY
+                <a
+                  href="https://github.com/iswatantraa/SWAT5G"
+                  target="_blank"
+                  rel="noreferrer"
+                  className="hidden sm:inline-flex items-center gap-1 px-2 py-0.5 rounded text-[10px] font-mono font-bold bg-slate-900 hover:bg-slate-800 text-cyan-300 border border-slate-700 hover:border-cyan-500/50 transition-colors"
+                >
+                  <span>iswatantraa/SWAT5G</span>
+                </a>
+                <span className="hidden md:inline-block px-1.5 py-0.5 rounded text-[9px] font-mono font-bold bg-cyan-950 text-cyan-300 border border-cyan-500/40">
+                  5.2 - 5.8 GHz
                 </span>
               </div>
             </div>

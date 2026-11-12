@@ -108,7 +108,7 @@ export const SAMPLE_FILES: TransferFile[] = [
   },
   {
     id: 'file-3',
-    name: 'AeroWave_Native_Release_v3.4.1.apk',
+    name: 'SWAT5G_v3.4.1_Release.apk',
     sizeBytes: 98566144, // 94.0 MB
     category: 'app',
     extension: 'APK',
@@ -141,7 +141,7 @@ export const SAMPLE_FILES: TransferFile[] = [
   },
   {
     id: 'file-6',
-    name: 'iOS_Xcode_Build_Artifacts.xcarchive',
+    name: 'SWAT5G_iOS_Build_Artifacts.xcarchive',
     sizeBytes: 1468006400, // 1.36 GB
     category: 'folder',
     extension: 'XCARCHIVE',

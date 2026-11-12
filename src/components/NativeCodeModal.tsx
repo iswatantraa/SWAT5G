@@ -12,7 +12,7 @@ interface NativeCodeModalProps {
 }
 
 export const NativeCodeModal: React.FC<NativeCodeModalProps> = ({ isOpen, onClose }) => {
-  const [activeTab, setActiveTab] = useState<'stack' | 'android' | 'ios' | 'tree' | 'protocol'>('stack');
+  const [activeTab, setActiveTab] = useState<'stack' | 'android' | 'ios' | 'tree' | 'protocol' | 'github'>('github');
   const [copiedFile, setCopiedFile] = useState<string | null>(null);
 
   if (!isOpen) return null;
@@ -25,8 +25,8 @@ export const NativeCodeModal: React.FC<NativeCodeModalProps> = ({ isOpen, onClos
   };
 
   // Code snippets
-  const codeAndroidHotspot = `// Aero5GHzHotspotManager.kt
-package com.aerowave.transfer.network
+  const codeAndroidHotspot = `// Swat5GHotspotManager.kt
+package com.iswatantraa.swat5g.network
 
 import android.content.Context
 import android.net.wifi.SoftApConfiguration
@@ -37,10 +37,11 @@ import androidx.annotation.RequiresApi
 import java.util.concurrent.Executor
 
 /**
- * Manages strict 5 GHz Wi-Fi Hotspot creation on Android 11+ (API 30+).
+ * SWAT5G: Manages strict 5 GHz Wi-Fi Hotspot creation on Android 11+ (API 30+).
  * Enforces BAND_5GHZ spectrum with zero fallback to 2.4 GHz.
+ * Repository: https://github.com/iswatantraa/SWAT5G
  */
-class Aero5GHzHotspotManager(private val context: Context) {
+class Swat5GHotspotManager(private val context: Context) {
 
     private val wifiManager = context.applicationContext.getSystemService(Context.WIFI_SERVICE) as WifiManager
     private var hotspotReservation: WifiManager.LocalOnlyHotspotReservation? = null
@@ -76,8 +77,8 @@ class Aero5GHzHotspotManager(private val context: Context) {
     private fun startApi30Strict5G(executor: Executor, callback: HotspotCallback) {
         try {
             val randomSuffix = (1000..9999).random()
-            val ssid = "AeroWave_5G_$randomSuffix"
-            val passphrase = "aero" + java.util.UUID.randomUUID().toString().substring(0, 12)
+            val ssid = "SWAT5G_\$randomSuffix"
+            val passphrase = "swat" + java.util.UUID.randomUUID().toString().substring(0, 12)
 
             // STRICT 5 GHz BAND CONFIGURATION
             val configBuilder = SoftApConfiguration.Builder()
@@ -113,7 +114,7 @@ class Aero5GHzHotspotManager(private val context: Context) {
                     }
 
                     override fun onFailed(reason: Int) {
-                        callback.onHotspotFailed("LocalOnlyHotspot failed with internal OS code: $reason", reason)
+                        callback.onHotspotFailed("LocalOnlyHotspot failed with internal OS code: \$reason", reason)
                     }
                 }
             )
@@ -127,10 +128,10 @@ class Aero5GHzHotspotManager(private val context: Context) {
             override fun onStarted(reservation: WifiManager.LocalOnlyHotspotReservation) {
                 hotspotReservation = reservation
                 val config = reservation.wifiConfiguration
-                callback.onHotspotStarted(config?.SSID ?: "AeroWave_5G", config?.preSharedKey ?: "", 5180, 36)
+                callback.onHotspotStarted(config?.SSID ?: "SWAT5G", config?.preSharedKey ?: "", 5180, 36)
             }
             override fun onFailed(reason: Int) {
-                callback.onHotspotFailed("Legacy Hotspot start failed: $reason", reason)
+                callback.onHotspotFailed("Legacy Hotspot start failed: \$reason", reason)
             }
         }, null)
     }
@@ -141,18 +142,19 @@ class Aero5GHzHotspotManager(private val context: Context) {
     }
 }`;
 
-  const codeAndroidValidator = `// WifiBandValidator.kt
-package com.aerowave.transfer.network
+  const codeAndroidValidator = `// SwatBandValidator.kt
+package com.iswatantraa.swat5g.network
 
 import android.content.Context
 import android.net.wifi.WifiInfo
 import android.net.wifi.WifiManager
 
 /**
- * Validates active Wi-Fi link frequency.
+ * SWAT5G: Validates active Wi-Fi link frequency.
  * Enforces strictly: Frequency >= 5000 MHz (Channel 36 to 165).
+ * Repository: https://github.com/iswatantraa/SWAT5G
  */
-object WifiBandValidator {
+object SwatBandValidator {
 
     const val MIN_5GHZ_FREQUENCY_MHZ = 5000 // 5.0 GHz boundary
     const val MAX_5GHZ_FREQUENCY_MHZ = 5895 // 5.895 GHz (UNII-4 edge)
@@ -210,8 +212,8 @@ object WifiBandValidator {
     }
 }`;
 
-  const codeAndroidServer = `// AeroTransferServer.kt
-package com.aerowave.transfer.engine
+  const codeAndroidServer = `// SwatTransferServer.kt
+package com.iswatantraa.swat5g.engine
 
 import io.ktor.server.application.*
 import io.ktor.server.engine.*
@@ -225,10 +227,11 @@ import java.io.RandomAccessFile
 import java.nio.channels.FileChannel
 
 /**
- * Ultra-high throughput multi-threaded HTTP/2 local transfer server.
+ * SWAT5G: Ultra-high throughput multi-threaded HTTP/2 local transfer server.
  * Streams dynamic 16MB chunks with zero-copy NIO FileChannel.
+ * Repository: https://github.com/iswatantraa/SWAT5G
  */
-class AeroTransferServer(
+class SwatTransferServer(
     private val port: Int = 50505,
     private val storageDir: File
 ) {
@@ -239,7 +242,7 @@ class AeroTransferServer(
             routing {
                 // Handshake verification
                 get("/api/v1/handshake") {
-                    call.respond(HttpStatusCode.OK, mapOf("status" to "5GHZ_READY", "protocol" to "AEROWAVE_V1"))
+                    call.respond(HttpStatusCode.OK, mapOf("status" to "5GHZ_READY", "protocol" to "SWAT5G_V1"))
                 }
 
                 // High-speed chunk upload stream
@@ -278,17 +281,18 @@ class AeroTransferServer(
     }
 }`;
 
-  const codeIOSConnector = `// Aero5GHotspotConnector.swift
+  const codeIOSConnector = `// Swat5GHotspotConnector.swift
 import Foundation
 import NetworkExtension
 import SystemConfiguration.CaptiveNetwork
 
 /**
- * Swift iOS implementation for instant 5 GHz Wi-Fi pairing
- * Uses NEHotspotConfiguration to join the sender's 5 GHz Hotspot without manual settings app navigation.
+ * SWAT5G: Swift iOS implementation for instant 5 GHz Wi-Fi pairing
+ * Uses NEHotspotConfiguration to join the sender's 5 GHz Hotspot without manual settings navigation.
+ * Repository: https://github.com/iswatantraa/SWAT5G
  */
 @available(iOS 11.0, *)
-public class Aero5GHotspotConnector: NSObject {
+public class Swat5GHotspotConnector: NSObject {
 
     public enum ConnectionError: Error {
         case userCancelled
@@ -298,7 +302,7 @@ public class Aero5GHotspotConnector: NSObject {
     }
 
     /**
-     * Programmatically connects iOS to the Android/iOS 5 GHz Hotspot via WPA3/WPA2.
+     * Programmatically connects iOS to the 5 GHz Hotspot via WPA3/WPA2.
      */
     public static func join5GHzHotspot(
         ssid: String,
@@ -341,19 +345,20 @@ public class Aero5GHotspotConnector: NSObject {
     }
 }`;
 
-  const codeIOSServer = `// AeroHttpServer.swift
+  const codeIOSServer = `// SwatHttpServer.swift
 import Foundation
 import Network
 
 /**
- * Swift Apple Network Framework (NWListener) Transfer Server.
+ * SWAT5G: Swift Apple Network Framework (NWListener) Transfer Server.
  * Direct TCP / HTTP zero-copy socket streaming at full 5 GHz link saturation.
+ * Repository: https://github.com/iswatantraa/SWAT5G
  */
 @available(iOS 13.0, *)
-public class AeroHttpServer {
+public class SwatHttpServer {
     private var listener: NWListener?
     private let port: NWEndpoint.Port = 50505
-    private let queue = DispatchQueue(label: "com.aerowave.transferserver", qos: .userInteractive)
+    private let queue = DispatchQueue(label: "com.iswatantraa.swat5g.server", qos: .userInteractive)
 
     public func startListening(onReceiveData: @escaping (Data, Int) -> Void) throws {
         let parameters = NWParameters.tcp
@@ -367,7 +372,7 @@ public class AeroHttpServer {
         }
 
         self.listener?.start(queue: self.queue)
-        print("[AeroWave] 5 GHz Socket Listener online on port \\(self.port)")
+        print("[SWAT5G] 5 GHz Socket Listener online on port \\(self.port)")
     }
 
     private func handleClientConnection(
@@ -398,29 +403,29 @@ public class AeroHttpServer {
     }
 }`;
 
-  const codeProjectTree = `aerowave_5g_mobile/
+  const codeProjectTree = `swat5g_mobile/ [iswatantraa/SWAT5G]
 ├── android/
 │   ├── app/
-│   │   ├── src/main/kotlin/com/aerowave/transfer/
+│   │   ├── src/main/kotlin/com/iswatantraa/swat5g/
 │   │   │   ├── MainActivity.kt                  # Flutter engine embedder
 │   │   │   ├── network/
-│   │   │   │   ├── Aero5GHzHotspotManager.kt    # Strict 5GHz LocalOnlyHotspot AP Engine
-│   │   │   │   ├── WifiBandValidator.kt         # WifiInfo.getFrequency() >= 5000MHz checks
+│   │   │   │   ├── Swat5GHotspotManager.kt      # Strict 5GHz LocalOnlyHotspot AP Engine
+│   │   │   │   ├── SwatBandValidator.kt         # WifiInfo.getFrequency() >= 5000MHz checks
 │   │   │   │   └── NSDPeerBroadcaster.kt        # mDNS/NSD 5GHz Discovery
 │   │   │   └── engine/
-│   │   │       ├── AeroTransferServer.kt        # Ktor Netty 16MB Chunk Zero-Copy NIO Server
-│   │   │       ├── AeroChunkClient.kt           # Multi-threaded HTTP/2 File Client
-│   │   │       └── AeroChannelPlugin.kt         # MethodChannel & EventChannel bridge
+│   │   │       ├── SwatTransferServer.kt        # Ktor Netty 16MB Chunk Zero-Copy NIO Server
+│   │   │       ├── SwatChunkClient.kt           # Multi-threaded HTTP/2 File Client
+│   │   │       └── SwatChannelPlugin.kt         # MethodChannel & EventChannel bridge
 │   │   └── AndroidManifest.xml                  # NEARBY_WIFI_DEVICES, CHANGE_WIFI_STATE
 │   └── build.gradle
 ├── ios/
 │   ├── Runner/
 │   │   ├── Network/
-│   │   │   ├── Aero5GHotspotConnector.swift     # NEHotspotConfiguration Manager (WPA3)
+│   │   │   ├── Swat5GHotspotConnector.swift     # NEHotspotConfiguration Manager (WPA3)
 │   │   │   ├── NetworkBandInspector.swift       # Frequency / Link Inspector
-│   │   │   └── AeroHttpServer.swift             # Network.framework NWListener Zero-Copy Socket
+│   │   │   └── SwatHttpServer.swift             # Network.framework NWListener Zero-Copy Socket
 │   │   ├── Plugin/
-│   │   │   └── AeroTransferPlugin.swift         # FlutterPlatformChannel bridge
+│   │   │   └── SwatTransferPlugin.swift         # FlutterPlatformChannel bridge
 │   │   └── Info.plist                           # Hotspot & Local Network Privacy Strings
 │   └── Podfile
 ├── lib/                                         # Flutter UI & Business Core
@@ -430,7 +435,7 @@ public class AeroHttpServer {
 │   │   ├── transfer_payload.dart                # Dynamic chunk manifest
 │   │   └── telemetry_state.dart                 # Real-time MB/s & RSSI stream
 │   ├── platform/
-│   │   └── aero_native_bridge.dart              # Typed MethodChannel / EventChannel API
+│   │   └── swat_native_bridge.dart              # Typed MethodChannel / EventChannel API
 │   ├── ui/
 │   │   ├── radar/                               # Concentric neon radar pulses
 │   │   ├── stream/                              # Particle beam & liquid progress
@@ -438,7 +443,9 @@ public class AeroHttpServer {
 │   │   └── qr/                                  # WPA3 instant pairing handshake
 └── pubspec.yaml`;
 
-  const protocolSpec = `### AeroWave-5G Multi-Threaded Chunk Protocol Specification (RFC-5001)
+  const protocolSpec = `### SWAT5G Multi-Threaded Chunk Protocol Specification (RFC-5001)
+Repository: https://github.com/iswatantraa/SWAT5G
+Author: iswatantraa
 
 1. PHY Layer Enforcement:
    - AP Host Mode: SoftApConfiguration.BAND_5GHZ (Channels 36, 40, 44, 48, 149, 153, 157, 161).
@@ -454,7 +461,7 @@ public class AeroHttpServer {
    - iOS: Apple Network.framework 'NWListener.receive(maximumLength: 16MB)' writing to POSIX 'pwrite()'.
 
 4. Cross-Platform Handshake Token:
-   - Format: Base64URL(JSON({ ssid, psk, ip, port, freqBand: "5GHz", token, expiry }))
+   - Format: Base64URL(JSON({ ssid: "DIRECT-SWAT5G-xxx", psk, ip, port, freqBand: "5GHz", token, expiry }))
    - Rendered as High-Density QR code with ECC level M.`;
 
   return (
@@ -473,13 +480,13 @@ public class AeroHttpServer {
             </div>
             <div>
               <div className="flex items-center gap-2">
-                <h2 className="text-base font-bold text-white">Mobile Architecture & Native 5 GHz Codebase</h2>
+                <h2 className="text-base font-bold text-white">SWAT5G Architecture &amp; Native 5 GHz Codebase</h2>
                 <span className="px-2 py-0.5 rounded text-[10px] font-mono font-bold bg-cyan-950 text-cyan-300 border border-cyan-500/50">
-                  Production Grade
+                  iswatantraa/SWAT5G
                 </span>
               </div>
               <p className="text-xs text-slate-400">
-                Flutter core with native Android Kotlin & iOS Swift platform channels
+                Flutter 3.x core with native Android Kotlin &amp; iOS Swift platform channels
               </p>
             </div>
           </div>
@@ -494,6 +501,21 @@ public class AeroHttpServer {
 
         {/* Tab Strip */}
         <div className="flex items-center gap-2 overflow-x-auto pb-1 scrollbar-none border-b border-slate-800/80">
+          <button
+            onClick={() => {
+              haptics.triggerTick();
+              setActiveTab('github');
+            }}
+            className={`flex items-center gap-2 px-3.5 py-2 rounded-xl text-xs font-semibold whitespace-nowrap transition-all cursor-pointer ${
+              activeTab === 'github'
+                ? 'bg-cyan-500/15 text-cyan-300 border border-cyan-500/40'
+                : 'text-slate-400 hover:text-slate-200 hover:bg-slate-800/60'
+            }`}
+          >
+            <Terminal className="w-3.5 h-3.5 text-cyan-400" />
+            <span>GitHub (iswatantraa/SWAT5G)</span>
+          </button>
+
           <button
             onClick={() => {
               haptics.triggerTick();
@@ -572,6 +594,97 @@ public class AeroHttpServer {
 
         {/* Tab Content Body */}
         <div className="flex-1 overflow-y-auto pr-1 space-y-4">
+          {activeTab === 'github' && (
+            <div className="space-y-4">
+              <div className="p-4 rounded-xl bg-slate-950/80 border border-cyan-500/30 space-y-3">
+                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+                  <div>
+                    <span className="text-[10px] font-mono uppercase text-cyan-400 font-bold">Official Repository</span>
+                    <h3 className="text-base font-bold text-white flex items-center gap-2">
+                      <span>iswatantraa/SWAT5G</span>
+                    </h3>
+                  </div>
+                  <a
+                    href="https://github.com/iswatantraa/SWAT5G"
+                    target="_blank"
+                    rel="noreferrer"
+                    className="inline-flex items-center gap-1.5 py-1.5 px-3 rounded-lg bg-cyan-500 hover:bg-cyan-400 text-slate-950 font-bold text-xs transition-colors shrink-0"
+                  >
+                    <span>View on GitHub</span>
+                    <ExternalLink className="w-3.5 h-3.5" />
+                  </a>
+                </div>
+                <p className="text-xs text-slate-300 leading-relaxed">
+                  SWAT5G is an ultra-high-speed cross-platform local transfer engine with hardware-enforced 5 GHz spectrum control and multi-gigabit throughput.
+                </p>
+              </div>
+
+              {/* Git Clone & Remote Setup */}
+              <div className="p-4 rounded-xl bg-slate-950/70 border border-slate-800 space-y-3">
+                <div className="flex items-center justify-between">
+                  <h4 className="text-xs font-bold text-slate-200">1. Clone &amp; Set Git Remote</h4>
+                  <button
+                    onClick={() => handleCopy('gitClone', 'git clone https://github.com/iswatantraa/SWAT5G.git\ncd SWAT5G')}
+                    className="flex items-center gap-1.5 text-xs text-cyan-400 hover:text-cyan-300 font-medium"
+                  >
+                    {copiedFile === 'gitClone' ? <Check className="w-3.5 h-3.5 text-emerald-400" /> : <Copy className="w-3.5 h-3.5" />}
+                    <span>{copiedFile === 'gitClone' ? 'Copied' : 'Copy'}</span>
+                  </button>
+                </div>
+                <pre className="p-3 rounded-lg bg-slate-900 border border-slate-800 font-mono text-xs text-cyan-300 overflow-x-auto">
+                  {`git clone https://github.com/iswatantraa/SWAT5G.git
+cd SWAT5G
+
+# Or push your local workspace to the repository:
+git init
+git remote add origin https://github.com/iswatantraa/SWAT5G.git
+git add .
+git commit -m "feat: Initial SWAT5G 5GHz transfer engine architecture"
+git branch -M main
+git push -u origin main`}
+                </pre>
+              </div>
+
+              {/* Build Instructions */}
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                <div className="p-3.5 rounded-xl bg-slate-950/70 border border-slate-800 space-y-2">
+                  <div className="flex items-center justify-between">
+                    <span className="text-xs font-bold text-emerald-400">Android Release Build</span>
+                    <button
+                      onClick={() => handleCopy('buildAndroid', 'cd android && ./gradlew assembleRelease')}
+                      className="text-[11px] text-cyan-400 hover:text-cyan-300"
+                    >
+                      {copiedFile === 'buildAndroid' ? 'Copied' : 'Copy'}
+                    </button>
+                  </div>
+                  <pre className="p-2.5 rounded-lg bg-slate-900 font-mono text-[11px] text-slate-300">
+                    {`cd android
+./gradlew assembleRelease
+# Output: app/build/outputs/apk/release/SWAT5G_v3.4.1_Release.apk`}
+                  </pre>
+                </div>
+
+                <div className="p-3.5 rounded-xl bg-slate-950/70 border border-slate-800 space-y-2">
+                  <div className="flex items-center justify-between">
+                    <span className="text-xs font-bold text-slate-200">iOS Release Build</span>
+                    <button
+                      onClick={() => handleCopy('buildIos', 'cd ios && pod install && xcodebuild -workspace Runner.xcworkspace -scheme Runner -configuration Release')}
+                      className="text-[11px] text-cyan-400 hover:text-cyan-300"
+                    >
+                      {copiedFile === 'buildIos' ? 'Copied' : 'Copy'}
+                    </button>
+                  </div>
+                  <pre className="p-2.5 rounded-lg bg-slate-900 font-mono text-[11px] text-slate-300">
+                    {`cd ios
+pod install
+xcodebuild -workspace Runner.xcworkspace \\
+  -scheme Runner -configuration Release`}
+                  </pre>
+                </div>
+              </div>
+            </div>
+          )}
+
           {activeTab === 'stack' && (
             <div className="space-y-4">
               <div className="p-4 rounded-xl bg-slate-950/70 border border-slate-800 space-y-3">

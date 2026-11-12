@@ -208,7 +208,7 @@ export default function App() {
   };
 
   const senderInfo = appRole === 'sender' 
-    ? { name: 'My Host Device', os: 'android', model: 'AeroWave Station' }
+    ? { name: 'My Host Device', os: 'android', model: 'SWAT5G Host Station' }
     : { name: selectedPeer?.name || 'Remote Host', os: selectedPeer?.os || 'ios', model: selectedPeer?.model || 'Device' };
 
   return (

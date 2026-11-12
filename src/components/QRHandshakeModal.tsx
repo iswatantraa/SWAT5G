@@ -26,15 +26,15 @@ export const QRHandshakeModal: React.FC<QRHandshakeModalProps> = ({
 
   const handshakeData: QRHandshakePayload = {
     version: '1.4',
-    ssid: 'DIRECT-AeroWave-5G-Ch48',
-    wpaKey: 'aero99x-5ghz-secure',
+    ssid: 'DIRECT-SWAT5G-5G-Ch48',
+    wpaKey: 'swat5g-ultra-mesh',
     ip: '192.168.49.1',
     port: 50505,
     band: '5GHz',
     channel: 48,
     frequencyMHz: 5240,
     security: 'WPA3_SAE',
-    token: 'tok_5g_8f912c9e782a45d0',
+    token: 'tok_swat5g_8f912c9e782a45d0',
     senderName: senderName,
     os: 'android',
   };
