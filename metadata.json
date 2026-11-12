@@ -1,0 +1,6 @@
+{
+  "name": "AeroWave 5G - Ultra-Fast Local File Transfer",
+  "description": "Cross-platform mobile application and native architecture for multi-gigabit 5 GHz Wi-Fi file transfers with radar discovery, live particle telemetry, and native Kotlin/Swift platform channels.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
